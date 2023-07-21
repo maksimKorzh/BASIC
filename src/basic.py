@@ -1,5 +1,6 @@
 
-src = [i for i in '-(-((((7 + 2) * 5) / (10 - 5)) + ((6 * 4) - (9 / 3))) - ((((8 + 2) - 1) * (4 + 6)) / (9 - 3)))'.replace(' ','')]
+#src = [i for i in '-(-((((7 + 2) * 5) / (10 - 5)) + ((6 * 4) - (9 / 3))) - ((((8 + 2) - 1) * (4 + 6)) / (9 - 3)))'.replace(' ', '')]
+src = [i for i in '-(-((((7 + 2) * 5) / (numOne - 5)) + ((numTwo * 4) - (9 / 3))) - ((((8 + 2) - 1) * (4 + numTwo)) / (9 - 3)))'.replace(' ', '')]
 #src = [i for i in '((10-5)+20/2)*4-(23+17)']
 #src = [i for i in '((12+5)*(13-6))+10']  # works
 #src = [i for i in '((12+5)*-(-13-6))+10']  # works
@@ -11,7 +12,11 @@ src = [i for i in '-(-((((7 + 2) * 5) / (10 - 5)) + ((6 * 4) - (9 / 3))) - ((((8
 
 #src = [i for i in '2+']  # works
 
-token = ''
+buffer = []
+variables = {
+  'numOne': 10,
+  'numTwo': 6
+}; token = ''
 
 def expr():
   a = term()
@@ -44,6 +49,13 @@ def number():
     tok += src[0]; del src[0]; num = int(tok)
   return num
 
+def variable():
+  name = ''
+  while len(src) and src[0].isalpha():
+    name += src[0]; del src[0]
+  if name not in variables: print('Variable "' + name + '" is not defined!')
+  return variables[name]
+
 def operator():
   op = src[0]
   del src[0]
@@ -51,18 +63,18 @@ def operator():
 
 def scan():
   global token
-  if len(src) and src[0].isdigit(): token = number()
-  # variable
+  if len(src) and src[0].isalpha(): token = variable();
+  elif len(src) and src[0].isdigit(): token = number()
   elif len(src) and src[0] in '+-*/()': token = operator()
 
 # main
 print('EXPR:', ''.join(src))
-print('eval()', eval(''.join(src)))
+#print('eval()', eval(''.join(src)))
 
 
 try: 
   scan(); result = expr()
   if result is not None: print('expr()', result)
-  else: print("Syntax error")
-except: print("Syntax error!")
+  else: print("Bad expression")
+except: print("Execution failed!")
 

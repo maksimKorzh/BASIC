@@ -1,34 +1,68 @@
 import os
 
-buffer = {}
+buffer = {
+   5: 'LET n = INPUT',
+  10: 'LET one = 0',
+  20: 'LET two = 1',
+  30: 'PRINT one',
+  40: 'PRINT two',
+  50: 'LET count = 3',
+  60: 'LET sum = one + two',
+  70: 'PRINT sum',
+  80: 'LET one = two',
+  90: 'LET two = sum',
+ 100: 'LET count = count + 1',
+ 110: 'IF count < n+1 THEN GOTO 60'
+};
 variables = {'numone': 10, 'numtwo': 6}
+line_number = 0
+goto = False
 token = ''
+
+def run():
+  global line_number, goto
+  line_iterator = iter(buffer)
+  goto = False
+  while True:
+    try: 
+      if goto == False: line_number = next(line_iterator)
+      if goto == True:
+        goto = False
+        current_iterator = iter(buffer)
+        current_line = next(current_iterator)
+        while line_number != current_line:
+          current_line = next(current_iterator)
+        line_iterator = current_iterator
+      line = buffer[line_number]
+      execute(line_number, line)
+    except: break
 
 def execute(num, line):
   try: 
     line = [c for c in line]; scan(line)
-    if token == 'PRINT': print_statement(line); scan(line)
-    if token == 'LET': let_statement(line); scan(line)
+    if   token == 'PRINT': print_statement(line);
+    elif token == 'GOTO': goto_statement(line)
+    elif token == 'LET': let_statement(line);
+    elif token == 'IF': if_statement(num, line);
   except: 
     print('Line ' + str(num) + ': ', end='')
     print("Execution failed!")
 
 def print_statement(line):
   line = [c for c in ''.join(line).strip()]; scan(line)
+  args = ','.join(''.join(line).split(',')[1:])
   if type(token) == str and token[0] == '"':
-    print(token[1:-1], end=' '); scan(line)
+    print(token[1:-1], end=''); scan(line)
   else: 
     line = [c for c in ''.join(line).replace(' ', '')]
-    print(calc(line), end=' ')
-  if token == ',': print_statement(line)
-  else: print()
-  
-def calc(line):
-  try: 
-    result = expression(line)
-    if result is not None: return result
-    else: print("Bad expression")
-  except: print("Execution failed!")
+    print(calc(line), end='')
+  if token == ',': print_statement(args)
+  else: print()  
+
+def goto_statement(line):
+  global line_number, goto
+  line = [c for c in ''.join(line).replace(' ', '')]
+  scan(line); line_number = calc(line); goto = True
 
 def let_statement(line):
   line = ''.join(line).replace(' ', '')
@@ -39,8 +73,38 @@ def let_statement(line):
   if val == '':
     print('Missing variable value!')
     raise ValueError
-  val = [c for c in val]; scan(val)
-  variables[name] = calc(val)
+  elif val == 'INPUT':
+    try: variables[name] = int(input())
+    except: 
+      print('Input must be integer type!')
+      raise ValueError
+  else: 
+    val = [c for c in val]; scan(val)
+    variables[name] = calc(val)
+
+def if_statement(num, line):
+  line = ''.join(line).split('THEN')
+  if len(line) != 2:
+    print('Missing "THEN" after condition!')
+    raise ValueError
+  line[0] = [c for c in ''.join(line[0]).replace(' ', '')]
+  line[1] = [c for c in ''.join(line[1].strip())]
+  line = line[0] + line[1]
+  scan(line); left_expr = calc(line);
+  op = token;
+  scan(line); right_expr = calc(line)
+  scan(line); condition = False;
+  if op == '>': condition = left_expr > right_expr
+  if op == '<': condition = left_expr < right_expr
+  if op == '=': condition = left_expr == right_expr
+  if condition == True: execute(num, token + ' ' + ''.join(line))
+
+def calc(line):
+  try: 
+    result = expression(line)
+    if result is not None: return result
+    else: print("Bad expression")
+  except: print("Execution failed!")
 
 def expression(line):
   a = term(line)
@@ -79,7 +143,6 @@ def variable(line):
     name += line[0]; del line[0]
   if name not in variables:
     print('Variable "' + name + '" is not defined!')
-
   try: return int(variables[name])
   except: return int(variables[variables[name]])
 
@@ -87,7 +150,7 @@ def statement(line):
   keyword = ''
   while len(line) and line[0].isupper():
     keyword += line[0]; del line[0]
-  if keyword not in ['PRINT', 'LET', 'IF', 'GOTO']:
+  if keyword not in ['PRINT', 'LET', 'IF', 'THEN', 'GOTO']:
     print('Unknown keyword "' + keyword + '"!')
     raise ValueError
   else: return keyword
@@ -111,7 +174,7 @@ def scan(line):
   if len(line) and line[0].isdigit(): token = number(line)
   elif len(line) and line[0].islower(): token = variable(line);
   elif len(line) and line[0].isupper(): token = statement(line)
-  elif len(line) and line[0] in '+-*/()!=<>,': token = operator(line)
+  elif len(line) and line[0] in '+-*/()=<>,': token = operator(line)
   elif len(line) and line[0] == '"': token = string(line)
 
 #e = [i for i in '-(-((((7 + 2) * 5) / (numone - 5)) + ((numtwo * 4) - (9 / 3))) - ((((8 + 2) - 1) * (4 + numtwo)) / (9 - 3)))'.replace(' ', '')]
@@ -121,12 +184,13 @@ os.system('clear')
 while True:
   line = input('> ')
   if line == 'quit': break
-  elif line == 'run': [execute(num, line) for num, line in sorted(buffer.items())]
+  elif line == 'run': run();
+  elif line == 'new': buffer = {}
   elif line == 'list': [print(num, line) for num, line in sorted(buffer.items())]
   elif line == 'clear': os.system('clear')
   else: 
     try:
       line_num = int(line.split(' ')[0])
       if line_num < len(buffer): buffer[line_num] = line
-      else: buffer[line_num] = ''.join(line.split(' ')[1:])
+      else: buffer[line_num] = ' '.join(line.split(' ')[1:])
     except: execute(0, line)

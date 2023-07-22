@@ -8,6 +8,7 @@ def execute(num, line):
   try: 
     line = [c for c in line]; scan(line)
     if token == 'PRINT': print_statement(line); scan(line)
+    if token == 'LET': let_statement(line); scan(line)
   except: 
     print('Line ' + str(num) + ': ', end='')
     print("Execution failed!")
@@ -28,6 +29,18 @@ def calc(line):
     if result is not None: return result
     else: print("Bad expression")
   except: print("Execution failed!")
+
+def let_statement(line):
+  line = ''.join(line).replace(' ', '')
+  if '=' not in line:
+    print('Missing "=" in variable definition!')
+    raise ValueError
+  name = line.split('=')[0]; val = line.split('=')[1]  
+  if val == '':
+    print('Missing variable value!')
+    raise ValueError
+  val = [c for c in val]; scan(val)
+  variables[name] = calc(val)
 
 def expression(line):
   a = term(line)
@@ -66,13 +79,15 @@ def variable(line):
     name += line[0]; del line[0]
   if name not in variables:
     print('Variable "' + name + '" is not defined!')
-  return variables[name]
+
+  try: return int(variables[name])
+  except: return int(variables[variables[name]])
 
 def statement(line):
   keyword = ''
   while len(line) and line[0].isupper():
     keyword += line[0]; del line[0]
-  if keyword not in ['PRINT', 'IF', 'GOTO']:
+  if keyword not in ['PRINT', 'LET', 'IF', 'GOTO']:
     print('Unknown keyword "' + keyword + '"!')
     raise ValueError
   else: return keyword
@@ -96,7 +111,7 @@ def scan(line):
   if len(line) and line[0].isdigit(): token = number(line)
   elif len(line) and line[0].islower(): token = variable(line);
   elif len(line) and line[0].isupper(): token = statement(line)
-  elif len(line) and line[0] in '+-*/(),': token = operator(line)
+  elif len(line) and line[0] in '+-*/()!=<>,': token = operator(line)
   elif len(line) and line[0] == '"': token = string(line)
 
 #e = [i for i in '-(-((((7 + 2) * 5) / (numone - 5)) + ((numtwo * 4) - (9 / 3))) - ((((8 + 2) - 1) * (4 + numtwo)) / (9 - 3)))'.replace(' ', '')]

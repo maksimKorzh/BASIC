@@ -1,19 +1,6 @@
 import os
 
-buffer = {
-   5: 'LET n = INPUT',
-  10: 'LET one = 0',
-  20: 'LET two = 1',
-  30: 'PRINT one',
-  40: 'PRINT two',
-  50: 'LET count = 3',
-  60: 'LET sum = one + two',
-  70: 'PRINT sum',
-  80: 'LET one = two',
-  90: 'LET two = sum',
- 100: 'LET count = count + 1',
- 110: 'IF count < n+1 THEN GOTO 60'
-};
+buffer = {}
 variables = {'numone': 10, 'numtwo': 6}
 line_number = 0
 goto = False
@@ -186,10 +173,29 @@ while True:
   if line == 'quit': break
   elif line == 'run': run();
   elif line == 'new': buffer = {}
+  elif line == 'load':
+    try: 
+      filename = input('File name: ')
+      with open(filename) as f:
+        buffer = {}
+        for line in f.read().split('\n'):
+          try: 
+            num = int(line.split(' ')[0])
+            src = ' '.join(line.split(' ')[1:])
+            buffer[num] = src
+          except: pass
+    except: print('Failed to load file!')
+  elif line == 'save':
+    try: 
+      filename = input('File name: ')
+      with open(filename, 'w') as f:
+        for num, line in buffer.items():
+          f.write(str(num) + ' ' + line + '\n')
+    except: print('Failed to save file!')
   elif line == 'list': [print(num, line) for num, line in sorted(buffer.items())]
   elif line == 'clear': os.system('clear')
   else: 
-    try:
+    try: 
       line_num = int(line.split(' ')[0])
       if line_num < len(buffer): buffer[line_num] = line
       else: buffer[line_num] = ' '.join(line.split(' ')[1:])

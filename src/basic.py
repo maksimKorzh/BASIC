@@ -1,3 +1,4 @@
+# BASIC Interpreter
 import os
 
 buffer = {}
@@ -163,9 +164,6 @@ def scan(line):
   elif len(line) and line[0].isupper(): token = statement(line)
   elif len(line) and line[0] in '+-*/()=<>,': token = operator(line)
   elif len(line) and line[0] == '"': token = string(line)
-
-#e = [i for i in '-(-((((7 + 2) * 5) / (numone - 5)) + ((numtwo * 4) - (9 / 3))) - ((((8 + 2) - 1) * (4 + numtwo)) / (9 - 3)))'.replace(' ', '')]
-#print(calc(e))
 
 os.system('clear')
 while True:

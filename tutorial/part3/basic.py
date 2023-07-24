@@ -128,4 +128,3 @@ def scan(line):
 
 line = 'PRINT 5, " ", 2*2, " ", "Hello, world!", " ", -((12+12)/4 + a * (b-17)), " ", "hi there"'
 execute(0, line)
-

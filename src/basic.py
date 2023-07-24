@@ -2,7 +2,7 @@
 import os
 
 buffer = {}
-variables = {'numone': 10, 'numtwo': 6}
+variables = {}
 line_number = 0
 goto = False
 token = ''

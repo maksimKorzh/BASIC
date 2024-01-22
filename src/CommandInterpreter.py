@@ -9,11 +9,12 @@ class CommandInterpreter:
         self,
         basic_interpreter: BasicInterpreter,
         command_processor: CommandProcessor,
-    ):
+    ) -> None:
         """Initialize the CommandInterpreter.
 
         :param basic_interpreter: An instance of BasicInterpreter.
         :param command_processor: An instance of CommandProcessor.
+        :return: None
         """
         self.basic_interpreter = basic_interpreter
         self.command_processor = command_processor
@@ -32,7 +33,6 @@ class CommandInterpreter:
             "run": self.basic_interpreter.run,
             "quit": exit,
         }
-        """"""
 
     def interpret_command(self, user_input: str) -> None:
         """Interpret a user command.
@@ -47,7 +47,9 @@ class CommandInterpreter:
                 print(f'The command failed for the following reason: "{e}".')
         else:
             try:
-                line_number, line_code = map(str.strip, user_input.split(" ", 1))
+                line_number, line_code = map(
+                    str.strip, user_input.split(" ", 1)
+                )
                 self.basic_interpreter.buffer[int(line_number)] = line_code
             except Exception:
                 self.basic_interpreter.execute(user_input)

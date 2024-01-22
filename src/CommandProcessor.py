@@ -12,6 +12,16 @@ class CommandProcessor:
         os.system("clear")
 
     @staticmethod
+    def list_buffer(buffer):
+        """
+
+        :param buffer:
+        :return:
+        """
+        for line_number, line_code in sorted(buffer.items()):
+            print(line_number, line_code)
+
+    @staticmethod
     def save_file(buffer):
         """
 

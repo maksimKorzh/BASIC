@@ -34,7 +34,7 @@ class CommandProcessor:
         """
         try:
             file_name = input("File name: ")
-            file_path = f"./basic-files/{file_name}"
+            file_path = os.path.join("./basic-files", file_name)
             with open(file_path, "w") as file:
                 for line_number, line_code in buffer.items():
                     file.write(f"{line_number} {line_code}\n")
@@ -51,7 +51,7 @@ class CommandProcessor:
         """
         try:
             file_name = input("File name: ")
-            file_path = f"./basic-files/{file_name}"
+            file_path = os.path.join("./basic-files", file_name)
             with open(file_path) as file:
                 buffer.clear()
                 for file_line in file.read().split("\n"):

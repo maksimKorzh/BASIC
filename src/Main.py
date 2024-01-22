@@ -4,9 +4,12 @@ from CommandProcessor import CommandProcessor
 
 
 def main() -> None:
-    """Represent the main function of the application.
+    """Main function for the interactive interpreter.
 
-    :return: None.
+    Creates instances of BasicInterpreter, CommandProcessor, and
+    CommandInterpreter to interpret user commands and BASIC code.
+
+    :return: None
     """
     basic_interpreter = BasicInterpreter()
     command_processor = CommandProcessor()
@@ -15,7 +18,7 @@ def main() -> None:
         command_processor,
     )
 
-    # Continuously takes in inputs from the user and interprets them
+    # Continuously takes inputs from the user and interprets them
     while True:
         user_input = input("> ")
         command_interpreter.interpret_command(user_input)

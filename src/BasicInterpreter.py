@@ -46,8 +46,8 @@ class BasicInterpreter:
                 # executes it
                 line_str = self.buffer.get(self.line_number, "")
                 self.execute(line_str)
-            except Exception as e:
-                print(f'Execution failed on line {self.line_number}: "{e}".')
+            except StopIteration:
+                break
 
     def execute(self, line_str: str) -> None:
         """Execute a line of BASIC code.

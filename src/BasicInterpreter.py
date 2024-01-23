@@ -31,33 +31,25 @@ class BasicInterpreter:
 
         :return: None
         """
-        # Initializes the line_iterator and goto flag
-        line_iterator = iter(self.buffer)
         self.goto = False
+
+        # Constructs an iterator for buffer's keys (line numbers)
+        line_iterator = iter(self.buffer)
 
         while True:
             try:
                 if self.goto:
-                    # Resets the goto flag
+                    # Resets goto and line_iterator to their initial values
                     self.goto = False
+                    line_iterator = iter(self.buffer)
 
-                    # Obtains the current iterator and line
-                    current_iterator = iter(self.buffer)
-                    current_line = next(current_iterator)
-
-                    # Navigates to the BASIC line specified by the GOTO
-                    # statement
-                    while current_line != self.line_number:
-                        current_line = next(current_iterator)
-
-                    # Sets line_iterator to current_iterator
-                    line_iterator = current_iterator
+                    # Go to the BASIC line specified by the GOTO statement
+                    while next(line_iterator) != self.line_number:
+                        pass
                 else:
-                    # Sets line_number to the sequentially-next line number
                     self.line_number = next(line_iterator)
 
-                # Obtains the BASIC line specified by its line number and
-                # executes it
+                # Executes the BASIC line specified by its line number
                 line_str = self.buffer.get(self.line_number, "")
                 self.execute(line_str)
             except StopIteration:

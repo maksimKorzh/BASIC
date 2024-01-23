@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 
 class BasicInterpreter:
@@ -6,11 +6,22 @@ class BasicInterpreter:
 
     def __init__(self):
         """Initialize the BasicInterpreter."""
-        self.token = ""
-        self.line_number = 0
-        self.goto = False
-        self.variables = {}
-        self.buffer = {}
+        self.token: str = ""
+        """Represents the current token."""
+
+        self.line_number: int = 0
+        """Represents the current line number of the BASIC program."""
+
+        self.goto: bool = False
+        """Determines if a GOTO statement has been reached."""
+
+        self.variables: Dict[str, int] = {}
+        """Stores variable names and their corresponding integer values."""
+
+        self.buffer: Dict[int, str] = {}
+        """Stores the BASIC program's lines numbers and their corresponding
+        source code.
+        """
 
     def run(self) -> None:
         """Run the BASIC program.

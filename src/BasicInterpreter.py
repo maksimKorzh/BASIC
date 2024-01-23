@@ -79,11 +79,13 @@ class BasicInterpreter:
         :param line_list: A BASIC file line as a list of characters.
         :return: None
         """
-        line_str = "".join(line_list).strip()
-        line_list = list(line_str)
+        line_list = list("".join(line_list).strip())
 
         # Obtains the current token
         self.scan(line_list)
+
+        # Truncates the first argument and stores the remaining args
+        remaining_args = list(",".join("".join(line_list).split(",")[1:]))
 
         if isinstance(self.token, str) and self.token[0] == '"':
             # Prints the characters in between the quotes
@@ -92,13 +94,10 @@ class BasicInterpreter:
             # Obtains the current token
             self.scan(line_list)
         else:
-            line_list = list(line_str.replace(" ", ""))
+            line_list = list("".join(line_list).replace(" ", ""))
 
             # Prints the calculated result of the expression(s)
             print(self.calculate(line_list), end="")
-
-        # Truncates the first argument and stores the remaining args
-        remaining_args = list(",".join(line_str.split(",")[1:]))
 
         # Continues to print the remaining args if the current token is a comma
         self.print_statement(remaining_args) if self.token == "," else print()

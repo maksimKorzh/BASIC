@@ -61,8 +61,8 @@ class CommandProcessor:
                             file_line.split(" ", 1),
                         )
                         buffer[int(line_number)] = line_code
-                    except Exception:
-                        raise Exception
+                    except ValueError:
+                        pass
             print(f'File "{file_name}" loaded into the buffer.')
         except Exception as e:
             print(f'Failed to load file: "{e}".')

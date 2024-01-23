@@ -4,8 +4,11 @@ from typing import Dict, List
 class BasicInterpreter:
     """A simple interpreter class for the BASIC programming language."""
 
-    def __init__(self):
-        """Initialize the BasicInterpreter."""
+    def __init__(self) -> None:
+        """Initialize the BasicInterpreter.
+
+        :return: None
+        """
         self.token: str = ""
         """Represents the current token."""
 

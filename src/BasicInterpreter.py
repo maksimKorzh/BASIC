@@ -62,12 +62,12 @@ class BasicInterpreter:
         :return: None
         """
         try:
-            # Converts line_str to List[str]
             line_list = list(line_str)
 
-            # Obtains the current token
+            # Sets the token to a BASIC keyword
             self.scan(line_list)
 
+            # Executes the appropriate BASIC statement
             if self.token == "PRINT":
                 self.print_statement(line_list)
             elif self.token == "LET":

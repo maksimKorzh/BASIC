@@ -148,43 +148,65 @@ class BasicInterpreter:
         :param line_list: A BASIC file line as a list of characters.
         :return: None
         """
-        # Obtains the conditional and then clauses
+        # Extracts the conditional and then clauses
         parts = "".join(line_list).split("THEN")
 
         if len(parts) != 2:
-            print('Missing "THEN" after condition!')
             raise ValueError('Missing "THEN" after condition!')
 
+        # Processes the conditional and then clauses
         conditional_clause = list("".join(parts[0]).replace(" ", ""))
         then_clause = list("".join(parts[1].strip()))
-
-        # Combines the conditional_clause and then_clause lists
         line_list = conditional_clause + then_clause
 
-        # Gets the current token and evaluates the left conditional expression
+        # Sets the token to the first value of the left conditional operand
         self.scan(line_list)
-        left_expression = self.calculate(line_list)
 
-        # Gets the operator and current token
+        # Evaluates the left conditional operand
+        left_operand = self.calculate(line_list)
+
+        # Gets the comparison operator from the token
         operator = self.token
+
+        # Sets the token to the first value of the right conditional operand
         self.scan(line_list)
 
-        # Evaluates the right conditional expression and gets the current token
-        right_expression = self.calculate(line_list)
+        # Evaluates the right conditional operand
+        right_operand = self.calculate(line_list)
+
+        # Advances the token to the first value in the THEN clause
         self.scan(line_list)
 
         # Evaluates the entire conditional clause
-        condition = False
-        if operator == ">":
-            condition = left_expression > right_expression
-        elif operator == "<":
-            condition = left_expression < right_expression
-        elif operator == "=":
-            condition = left_expression == right_expression
+        condition = self.evaluate_condition(
+            left_operand,
+            operator,
+            right_operand,
+        )
 
-        # Executes the current BASIC line from the above condition
+        # Executes the THEN clause if the condition is true
         if condition:
             self.execute(f'{self.token} {"".join(line_list)}')
+
+    @staticmethod
+    def evaluate_condition(
+        left_operand: int, operator: str, right_operand: int
+    ) -> bool:
+        """Evaluate a conditional expression.
+
+        :param left_operand: The left operand.
+        :param operator: The comparison operator.
+        :param right_operand: The right operand.
+        :return: The result of the condition.
+        """
+        if operator == ">":
+            return left_operand > right_operand
+        elif operator == "<":
+            return left_operand < right_operand
+        elif operator == "=":
+            return left_operand == right_operand
+        else:
+            raise ValueError(f'Invalid comparison operator: "{operator}".')
 
     def goto_statement(self, line_list: List[str]) -> None:
         """Handle a GOTO statement.

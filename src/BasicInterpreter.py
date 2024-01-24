@@ -116,27 +116,27 @@ class BasicInterpreter:
         """
         line_str = "".join(line_list).replace(" ", "")
 
+        # Checks if "=" is missing in the variable definition
         if "=" not in line_str:
-            print('Missing "=" in variable definition!')
             raise ValueError('Missing "=" in variable definition!')
 
         # Obtains the variable name and value
         name, val = map(str.strip, line_str.split("="))
 
+        # Checks if the variable value is missing
         if not val:
-            print("Missing variable value!")
             raise ValueError("Missing variable value!")
-        elif val == "INPUT":
+
+        if val == "INPUT":
             try:
                 # Stores the inputted variable name and value
                 self.variables[name] = int(input())
             except ValueError:
-                print("Input must be an integer!")
                 raise ValueError("Input must be an integer!")
         else:
             val_list = list(val)
 
-            # Obtains the current token
+            # Sets the token to the first value of the expression
             self.scan(val_list)
 
             # Stores the variable name and its calculated value

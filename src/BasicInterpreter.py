@@ -87,25 +87,25 @@ class BasicInterpreter:
         """
         line_list = list("".join(line_list).strip())
 
-        # Obtains the current token
+        # Sets the token to the first print arg
         self.scan(line_list)
 
-        # Truncates the first argument and stores the remaining args
+        # Truncates the first print arg and stores the remaining print args
         remaining_args = list(",".join("".join(line_list).split(",")[1:]))
 
         if isinstance(self.token, str) and self.token[0] == '"':
-            # Prints the characters in between the quotes
+            # Prints the characters between the quotes
             print(self.token[1:-1], end="")
 
-            # Obtains the current token
+            # Sets the token to a comma if there are multiple print args
             self.scan(line_list)
         else:
             line_list = list("".join(line_list).replace(" ", ""))
 
-            # Prints the calculated result of the expression(s)
+            # Prints the calculated result of the expression
             print(self.calculate(line_list), end="")
 
-        # Continues to print the remaining args if the current token is a comma
+        # Continues to print the remaining args
         self.print_statement(remaining_args) if self.token == "," else print()
 
     def let_statement(self, line_list: List[str]) -> None:

@@ -214,13 +214,13 @@ class BasicInterpreter:
         :param line_list: A BASIC file line as a list of characters.
         :return: None
         """
+        # Extracts the line number from the GOTO statement
         line_list = list("".join(line_list).replace(" ", ""))
-
-        # Obtains the current token and line number
         self.scan(line_list)
-        self.line_number = self.calculate(line_list)
+        target_line_number = self.calculate(line_list)
 
-        # Sets the goto flag to True
+        # Updates the line number and sets the goto flag
+        self.line_number = target_line_number
         self.goto = True
 
     def calculate(self, line_list: List[str]) -> int:

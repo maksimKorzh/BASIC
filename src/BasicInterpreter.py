@@ -224,13 +224,12 @@ class BasicInterpreter:
         self.goto = True
 
     def calculate(self, line_list: List[str]) -> int:
-        """Evaluate mathematical expressions.
+        """Evaluate a mathematical expression.
 
         :param line_list: A BASIC file line as a list of characters.
-        :return: The integer representation of the evaluated expression(s).
+        :return: The integer representation of the evaluated expression.
         """
         try:
-            # Calculates the result of the expression(s)
             result = self.expression(line_list)
 
             if result is None:

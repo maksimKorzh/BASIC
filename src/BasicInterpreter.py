@@ -240,36 +240,30 @@ class BasicInterpreter:
             print(f'Calculation failed: "{e}".')
 
     def expression(self, line_list: List[str]) -> int | None:
-        """Handle mathematical expressions.
+        """Handle a mathematical expression.
 
         :param line_list: A BASIC file line as a list of characters.
         :return: The integer representation of the expression or None.
         """
-        # Evaluates the first term in this expression
+        # Evaluates the first term in the expression
         a = self.term(line_list)
 
-        while True:
-            if self.token == "+":
-                # Obtains the current token
-                self.scan(line_list)
+        while self.token in ["+", "-"]:
+            # Gets the plus/minus operator from the token
+            operator = self.token
 
-                # Evaluates the next term in this expression
-                b = self.term(line_list)
+            # Sets the token to the next term in the expression
+            self.scan(line_list)
 
-                # Obtains the sum of the terms
+            # Evaluates the next term in the expression
+            b = self.term(line_list)
+
+            if operator == "+":
                 a += b
-            elif self.token == "-":
-                # Obtains the current token
-                self.scan(line_list)
-
-                # Evaluates the next term in this expression
-                b = self.term(line_list)
-
-                # Obtains the difference of the terms
+            elif operator == "-":
                 a -= b
-            else:
-                # Returns the integer representation of the expression or None
-                return a
+
+        return a
 
     def term(self, line_list: List[str]) -> int | None:
         """Handle term operations.

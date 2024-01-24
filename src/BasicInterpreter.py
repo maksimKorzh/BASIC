@@ -276,7 +276,7 @@ class BasicInterpreter:
         # Evaluates the first factor in the term
         a = self.factor(line_list)
 
-        # Obtains the current token
+        # Moves to the next token
         self.scan(line_list)
 
         # Continues evaluating factors as long as the token is "*" or "/"

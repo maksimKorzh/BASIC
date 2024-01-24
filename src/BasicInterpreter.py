@@ -34,20 +34,20 @@ class BasicInterpreter:
         self.goto = False
 
         # Constructs an iterator for buffer's keys (line numbers)
-        line_iterator = iter(self.buffer)
+        line_num_iterator = iter(self.buffer)
 
         while True:
             try:
                 if self.goto:
-                    # Resets goto and line_iterator to their initial values
+                    # Resets goto and line_num_iterator to their initial values
                     self.goto = False
-                    line_iterator = iter(self.buffer)
+                    line_num_iterator = iter(self.buffer)
 
                     # Go to the BASIC line specified by the GOTO statement
-                    while next(line_iterator) != self.line_number:
+                    while next(line_num_iterator) != self.line_number:
                         pass
                 else:
-                    self.line_number = next(line_iterator)
+                    self.line_number = next(line_num_iterator)
 
                 # Executes the BASIC line specified by its line number
                 line_str = self.buffer.get(self.line_number, "")

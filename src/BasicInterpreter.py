@@ -273,34 +273,30 @@ class BasicInterpreter:
         :param line_list: A BASIC file line as a list of characters.
         :return: The integer representation of the term or None.
         """
-        # Evaluates the first factor in this term
+        # Evaluates the first factor in the term
         a = self.factor(line_list)
 
-        while True:
-            # Obtains the current token
+        # Obtains the current token
+        self.scan(line_list)
+
+        # Continues evaluating factors as long as the token is "*" or "/"
+        while self.token in ["*", "/"]:
+            # Gets the multiplication/division operator from the token
+            operator = self.token
+
+            # Sets the token to the next factor in the term
             self.scan(line_list)
 
-            if self.token == "*":
-                # Obtains the current token
-                self.scan(line_list)
+            # Evaluates the next factor in the term
+            b = self.factor(line_list)
 
-                # Evaluates the next factor in this term
-                b = self.factor(line_list)
-
-                # Obtains the product of the factors
+            # Updates the result based on the operator
+            if operator == "*":
                 a *= b
-            elif self.token == "/":
-                # Obtains the current token
-                self.scan(line_list)
-
-                # Evaluates the next factor in this term
-                b = self.factor(line_list)
-
-                # Obtains the integer quotient of the factors
+            elif operator == "/":
                 a = int(a / b)
-            else:
-                # Returns the integer representation of the term or None
-                return a
+
+        return a
 
     def factor(self, line_list: List[str]) -> int | None:
         """Handle factors in expressions.

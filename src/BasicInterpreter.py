@@ -248,6 +248,7 @@ class BasicInterpreter:
         # Evaluates the first term in the expression
         a = self.term(line_list)
 
+        # Continues evaluating terms as long as the token is "+" or "-"
         while self.token in ["+", "-"]:
             # Gets the plus/minus operator from the token
             operator = self.token
@@ -258,6 +259,7 @@ class BasicInterpreter:
             # Evaluates the next term in the expression
             b = self.term(line_list)
 
+            # Updates the result based on the operator
             if operator == "+":
                 a += b
             elif operator == "-":

@@ -392,7 +392,6 @@ class BasicInterpreter:
             keyword += line_list.pop(0)
 
         if keyword not in ["PRINT", "LET", "IF", "THEN", "GOTO"]:
-            print(f'Unknown keyword "{keyword}"!')
             raise ValueError(f'Unknown keyword "{keyword}"!')
         else:
             return keyword

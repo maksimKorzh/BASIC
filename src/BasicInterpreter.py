@@ -312,10 +312,10 @@ class BasicInterpreter:
             self.scan(line_list)
 
             # Evaluates the factor expression between the parentheses
-            a = self.expression(line_list)
+            factor_expression = self.expression(line_list)
 
             # Returns the evaluated expression or None if not properly closed
-            return a if self.token == ")" else None
+            return factor_expression if self.token == ")" else None
 
         if self.token == "-":
             # Sets the token to the first value of the factor expression

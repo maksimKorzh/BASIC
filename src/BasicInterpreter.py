@@ -403,7 +403,10 @@ class BasicInterpreter:
         :param line_list: A BASIC file line as a list of characters.
         :return: A BASIC operator.
         """
-        return line_list.pop(0)
+        if line_list:
+            return line_list.pop(0)
+        else:
+            raise ValueError("Unexpected end of line. Expected an operator.")
 
     @staticmethod
     def string(line_list: List[str]) -> str:

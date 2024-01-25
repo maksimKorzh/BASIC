@@ -415,21 +415,23 @@ class BasicInterpreter:
         :param line_list: A BASIC file line as a list of characters.
         :return: A BASIC string.
         """
-        # Removes the opening quote from line_list
-        line_list.pop(0)
-
-        # Builds the BASIC string to be returned
-        str_val = ""
-        while line_list and line_list[0] != '"':
-            str_val += line_list.pop(0)
-
-        if not line_list:
-            # Notifies the user of the missing closing quote
-            print('Missing closing quote (")!')
-            raise ValueError('Missing closing quote (")!')
-        else:
-            # Removes the closing quote from line_list
+        if line_list and line_list[0] == '"':
+            # Removes the opening quote from line_list
             line_list.pop(0)
 
-            # Returns the entire BASIC string
-            return f'"{str_val}"'
+            # Builds the BASIC string to be returned
+            str_val = ""
+            while line_list and line_list[0] != '"':
+                str_val += line_list.pop(0)
+
+            if not line_list:
+                # Notifies the user of the missing closing quote
+                raise ValueError('Missing closing quote (")!')
+            else:
+                # Removes the closing quote from line_list
+                line_list.pop(0)
+
+                # Returns the entire BASIC string
+                return f'"{str_val}"'
+        else:
+            raise ValueError('String must start with a quote (").')

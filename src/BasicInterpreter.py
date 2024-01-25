@@ -339,7 +339,7 @@ class BasicInterpreter:
             elif first_char.islower():
                 self.token = self.variable(line_list)
             elif first_char.isupper():
-                self.token = self.statement(line_list)
+                self.token = self.keyword(line_list)
             elif first_char in "+-*/()=<>,":
                 self.token = self.operator(line_list)
             elif first_char == '"':
@@ -380,7 +380,7 @@ class BasicInterpreter:
             raise KeyError(f'Variable "{var_name}" is not defined!')
 
     @staticmethod
-    def statement(line_list: List[str]) -> str:
+    def keyword(line_list: List[str]) -> str:
         """Resolve the token as a keyword.
 
         :param line_list: A BASIC file line as a list of characters.

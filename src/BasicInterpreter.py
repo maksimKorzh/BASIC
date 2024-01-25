@@ -299,7 +299,7 @@ class BasicInterpreter:
         return a
 
     def factor(self, line_list: List[str]) -> int | None:
-        """Handle factors in expressions.
+        """Handle factors in an expression.
 
         :param line_list: A BASIC file line as a list of characters.
         :return: The integer representation of the factor or None.
@@ -308,27 +308,24 @@ class BasicInterpreter:
             return self.token
 
         if self.token == "(":
-            # Obtains the current token
+            # Sets the token to the first value of the factor expression
             self.scan(line_list)
 
-            # Evaluates the expression between the parentheses
+            # Evaluates the factor expression between the parentheses
             a = self.expression(line_list)
 
-            # Returns the evaluated expression or None
-            if a is None:
-                return None
-            elif self.token == ")":
-                return a
-            else:
-                return None
-        elif self.token == "-":
-            # Obtains the current token
+            # Returns the evaluated expression or None if not properly closed
+            return a if self.token == ")" else None
+
+        if self.token == "-":
+            # Sets the token to the first value of the factor expression
             self.scan(line_list)
 
-            # Returns the negated factor
+            # Returns the negated factor expression
             return -self.factor(line_list)
-        else:
-            return None
+
+        # Returns None if the token is not recognized as a factor
+        return None
 
     def scan(self, line_list: List[str]) -> None:
         """Tokenize a portion of the input line according to its syntax.

@@ -33,13 +33,18 @@ class CommandProcessor:
         :return: None
         """
         try:
+            # Gets the desired file name from user input
             file_name = input("File name: ")
             file_path = os.path.join("./basic-files", file_name)
+
+            # Writes each BASIC file line from the buffer to the file
             with open(file_path, "w") as file:
                 for line_number, line_code in buffer.items():
                     file.write(f"{line_number} {line_code}\n")
+
             print(f'Buffer saved to "{file_path}".')
         except Exception as e:
+            # Handles exceptions and displays an error message
             print(f'Failed to save file: "{e}".')
 
     @staticmethod
@@ -53,7 +58,10 @@ class CommandProcessor:
             file_name = input("File name: ")
             file_path = os.path.join("./basic-files", file_name)
             with open(file_path) as file:
+                # Clears the buffer of its old values
                 buffer.clear()
+
+                # Reads and stores each BASIC line to the buffer
                 for file_line in file.read().split("\n"):
                     try:
                         line_number, line_code = map(

@@ -55,13 +55,15 @@ class CommandProcessor:
         :return: None
         """
         try:
+            # Gets the desired file name from user input
             file_name = input("File name: ")
             file_path = os.path.join("./basic-files", file_name)
+
             with open(file_path) as file:
                 # Clears the buffer of its old values
                 buffer.clear()
 
-                # Reads and stores each BASIC line to the buffer
+                # Reads and stores each BASIC line from the file to the buffer
                 for file_line in file.read().split("\n"):
                     try:
                         line_number, line_code = map(
@@ -71,6 +73,8 @@ class CommandProcessor:
                         buffer[int(line_number)] = line_code
                     except ValueError:
                         pass
+
             print(f'File "{file_name}" loaded into the buffer.')
         except Exception as e:
+            # Handles exceptions and displays an error message
             print(f'Failed to load file: "{e}".')

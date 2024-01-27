@@ -3,7 +3,7 @@ from CommandProcessor import CommandProcessor
 
 
 class CommandInterpreter:
-    """Interprets user commands for the BasicInterpreter."""
+    """A class for interpreting user commands for the BasicInterpreter."""
 
     def __init__(
         self,
@@ -17,7 +17,11 @@ class CommandInterpreter:
         :return: None
         """
         self.basic_interpreter = basic_interpreter
+        """Contains an instance of BasicInterpreter."""
+
         self.command_processor = command_processor
+        """Contains an instance of CommandProcessor."""
+
         self.commands = {
             "clear": self.command_processor.clear_screen,
             "list": lambda: self.command_processor.list_buffer(
@@ -33,6 +37,7 @@ class CommandInterpreter:
             "run": self.basic_interpreter.run,
             "quit": exit,
         }
+        """Maps the commands to their corresponding functions."""
 
     def interpret_command(self, user_input: str) -> None:
         """Interpret a user command.

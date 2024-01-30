@@ -18,10 +18,13 @@ def main() -> None:
         command_processor,
     )
 
-    # Continuously takes inputs from the user and interprets them
-    while True:
-        user_input = input("> ")
-        command_interpreter.interpret_command(user_input)
+    try:
+        # Continuously takes inputs from the user and interprets them
+        while True:
+            user_input = input("> ")
+            command_interpreter.interpret_command(user_input)
+    except KeyboardInterrupt:
+        print("\nExiting the interpreter.")
 
 
 if __name__ == "__main__":

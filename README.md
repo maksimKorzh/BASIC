@@ -21,3 +21,21 @@ Launch the interpreter with the following command:
 ```bash
 $ python3 Main.py
 ```
+
+Now, you can input BASIC code like the following, *or*...
+
+```bash
+$ 10 LET a = 3
+```
+
+...use the following commands:
+
+| **Command** |                 **Explanation**                 |
+|:-----------:|:-----------------------------------------------:|
+|    clear    |          It clears the terminal screen.         |
+|     list    |       It lists the contents of the buffer.      |
+|     save    |          It saves the buffer to a file.         |
+|     load    |         It loads a file into the buffer.        |
+|     new     |              It clears the buffer.              |
+|     run     | It runs the BASIC program stored in the buffer. |
+|     quit    |        It exits the interpreter terminal.       |

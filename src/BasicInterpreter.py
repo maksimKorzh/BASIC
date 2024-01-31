@@ -239,7 +239,7 @@ class BasicInterpreter:
         except Exception as e:
             print(f'Calculation failed: "{e}".')
 
-    def expression(self, line_list: List[str]) -> int | None:
+    def expression(self, line_list: List[str]) -> int:
         """Handle a mathematical expression.
 
         :param line_list: A BASIC file line as a list of characters.
@@ -267,7 +267,7 @@ class BasicInterpreter:
 
         return a
 
-    def term(self, line_list: List[str]) -> int | None:
+    def term(self, line_list: List[str]) -> int:
         """Handle term operations.
 
         :param line_list: A BASIC file line as a list of characters.

@@ -298,7 +298,7 @@ class BasicInterpreter:
 
         return a
 
-    def factor(self, line_list: List[str]) -> int | None:
+    def factor(self, line_list: List[str]) -> int:
         """Handle factors in an expression.
 
         :param line_list: A BASIC file line as a list of characters.
